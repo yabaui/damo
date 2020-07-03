@@ -15,12 +15,10 @@ import org.springframework.stereotype.Service;
 public class DAmoService {
     @Value("${damo.agent.path}")
     private String agentPath;
-    @Value("${security.personal.key}")
+    @Value("${btob.security.personal.key}")
     private String securityKey;
-    @Value("${bm.r.f}")
+    @Value("${btob.security.finance.key}")
     private String financeSecurityKey;
-    @Value("${bm.e.01}")
-    private String exportKey01;
 
     /**
      * string 암호화 함수

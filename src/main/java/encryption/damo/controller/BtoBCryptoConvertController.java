@@ -8,6 +8,7 @@ import lombok.RequiredArgsConstructor;
 import org.springframework.context.annotation.Profile;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.GetMapping;
+import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.RestController;
 
 @Profile(value = {"dev", "stg", "btob"})
@@ -18,14 +19,14 @@ public class BtoBCryptoConvertController {
 
     @GetMapping("/btob-crypto/convert/overseas")
     public ResponseEntity<ResponseObject<String>> convertOverseas() {
-        return ResponseUtils.createResponseEntity(
-                ResponseCodes.SUCCESS, cryptoConvertService.convertOverseasIns());
+        cryptoConvertService.convertOverseasIns();
+        return ResponseUtils.createResponseEntity(ResponseCodes.SUCCESS);
     }
 
     @GetMapping("/btob-crypto/convert/ins-market-subscription-history")
     public ResponseEntity<ResponseObject<String>> convertInsMarketSubscriptionHistory() {
-        return ResponseUtils.createResponseEntity(
-                ResponseCodes.SUCCESS, cryptoConvertService.convertInsMarketSubscriptionHistory());
+        cryptoConvertService.convertInsMarketSubscriptionHistory();
+        return ResponseUtils.createResponseEntity(ResponseCodes.SUCCESS);
     }
 
     @GetMapping("/btob-crypto/update/ins-market-subscription-history")

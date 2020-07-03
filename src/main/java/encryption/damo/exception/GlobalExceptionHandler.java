@@ -25,10 +25,10 @@ public class GlobalExceptionHandler extends RuntimeException {
 
     @ResponseStatus(HttpStatus.OK)
     @ExceptionHandler(IntegrationException.class)
-    public <T> ResponseEntity<ResponseObject<T>> handle(HttpServletRequest request, IntegrationException ie) {
+    public ResponseEntity<ResponseObject<String>> handleIntegrationException(HttpServletRequest request, IntegrationException ie) {
         this.printLog(request, ie);
 
-        return ResponseUtils.createResponseEntity(ie.getResponseCodes(), null);
+        return ResponseUtils.createResponseEntity(ie.getResponseCodes(), ie.getMessage());
     }
 
     protected void printLog(HttpServletRequest request, Exception e) {

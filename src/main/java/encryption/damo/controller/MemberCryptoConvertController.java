@@ -18,43 +18,43 @@ public class MemberCryptoConvertController {
 
     @GetMapping("/member-crypto/convert/health-checkup")
     public ResponseEntity<ResponseObject<String>> convertHealthCheckup() {
-        return ResponseUtils.createResponseEntity(
-                ResponseCodes.SUCCESS, cryptoConvertService.convertHealthCheckupCrypto());
+        cryptoConvertService.convertHealthCheckupCrypto();
+        return ResponseUtils.createResponseEntity(ResponseCodes.SUCCESS);
     }
 
     @GetMapping("/member-crypto/convert/health-checkup-detail")
     public ResponseEntity<ResponseObject<String>> convertHealthCheckupDetail() {
-        return ResponseUtils.createResponseEntity(
-                ResponseCodes.SUCCESS, cryptoConvertService.convertHealthCheckupDetailCrypto());
+        cryptoConvertService.convertHealthCheckupDetailCrypto();
+        return ResponseUtils.createResponseEntity(ResponseCodes.SUCCESS);
     }
 
     @GetMapping("/member-crypto/convert/family-health-checkup")
     public ResponseEntity<ResponseObject<String>> convertFamilyHeathCheckup() {
-        return ResponseUtils.createResponseEntity(
-                ResponseCodes.SUCCESS, cryptoConvertService.convertFamilyHeathCheckupCrypto());
+        cryptoConvertService.convertFamilyHeathCheckupCrypto();
+        return ResponseUtils.createResponseEntity(ResponseCodes.SUCCESS);
     }
 
     @GetMapping("/member-crypto/convert/health-checkup-analysis-pdf")
     public ResponseEntity<ResponseObject<String>> convertHealthCheckupAnalysisPdf() {
-        return ResponseUtils.createResponseEntity(
-                ResponseCodes.SUCCESS, cryptoConvertService.convertHealthCheckupAnalysisPdfCrypto());
+        cryptoConvertService.convertHealthCheckupAnalysisPdfCrypto();
+        return ResponseUtils.createResponseEntity(ResponseCodes.SUCCESS);
     }
 
     @GetMapping("/member-crypto/convert/health-checkup-analysis-guide")
     public ResponseEntity<ResponseObject<String>> convertHealthCheckupBioAgeAnalysisGuide() {
-        return ResponseUtils.createResponseEntity(
-                ResponseCodes.SUCCESS, cryptoConvertService.convertHealthCheckupBioAgeAnalysisGuideCrypto());
+        cryptoConvertService.convertHealthCheckupBioAgeAnalysisGuideCrypto();
+        return ResponseUtils.createResponseEntity(ResponseCodes.SUCCESS);
     }
 
     @GetMapping("/member-crypto/convert/health-checkup-life-expectancy")
     public ResponseEntity<ResponseObject<String>> convertHealthCheckupBioAgeLifeExpectancy() {
-        return ResponseUtils.createResponseEntity(
-                ResponseCodes.SUCCESS, cryptoConvertService.convertHealthCheckupBioAgeLifeExpectancyCrypto());
+        cryptoConvertService.convertHealthCheckupBioAgeLifeExpectancyCrypto();
+        return ResponseUtils.createResponseEntity(ResponseCodes.SUCCESS);
     }
 
     @GetMapping("/member-crypto/convert/ins-market-subscription-history")
     public ResponseEntity<ResponseObject<String>> convertInsMarketSubscriptionHistory() {
-        return ResponseUtils.createResponseEntity(
-                ResponseCodes.SUCCESS, cryptoConvertService.convertInsMarketSubscriptionHistory());
+        cryptoConvertService.convertInsMarketSubscriptionHistory();
+        return ResponseUtils.createResponseEntity(ResponseCodes.SUCCESS);
     }
 }

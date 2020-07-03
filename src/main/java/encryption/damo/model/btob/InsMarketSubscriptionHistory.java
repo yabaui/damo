@@ -30,8 +30,8 @@ public class InsMarketSubscriptionHistory implements Serializable {
     @Column(name = "subscription_type", length = 3, columnDefinition = "varchar(3) default 'G'", nullable = false)
     private String subscriptionType;
 
-    @Column(name = "inflow_channel", length = 2, columnDefinition = "varchar(2) default 'M'", nullable = false)
-    private String inflowChannel;
+//    @Column(name = "inflow_channel", length = 2, columnDefinition = "varchar(2) default 'M'", nullable = false)
+//    private String inflowChannel;
 
     @Column(name = "insurance_code", length = 3)
     private String insuranceCode;
