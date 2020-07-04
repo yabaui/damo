@@ -14,13 +14,21 @@ import org.springframework.web.bind.annotation.ResponseStatus;
 
 @ControllerAdvice
 @Slf4j
-public class GlobalExceptionHandler {
+public class GlobalExceptionHandler extends RuntimeException {
     @ResponseStatus(HttpStatus.OK)
     @ExceptionHandler(value = Exception.class)
     public <T> ResponseEntity<ResponseObject<T>> handleException(HttpServletRequest request, Exception e) {
         this.printLog(request, e);
 
         return ResponseUtils.createResponseEntity(ResponseCodes.FAIL, null);
+    }
+
+    @ResponseStatus(HttpStatus.OK)
+    @ExceptionHandler(IntegrationException.class)
+    public ResponseEntity<ResponseObject<String>> handleIntegrationException(HttpServletRequest request, IntegrationException ie) {
+        this.printLog(request, ie);
+
+        return ResponseUtils.createResponseEntity(ie.getResponseCodes(), ie.getMessage());
     }
 
     protected void printLog(HttpServletRequest request, Exception e) {
@@ -30,6 +38,10 @@ public class GlobalExceptionHandler {
             log.error(e.getMessage());
         }
 
-        e.printStackTrace();
+        if (!StringUtils.isEmpty(e.getLocalizedMessage())) {
+            log.error(e.getLocalizedMessage());
+        }
+
+        log.error(e.toString());
     }
 }

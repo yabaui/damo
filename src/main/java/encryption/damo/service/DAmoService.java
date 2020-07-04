@@ -1,13 +1,11 @@
 package encryption.damo.service;
 
-import java.util.Objects;
-
 import com.penta.scpdb.ScpDbAgent;
 import com.penta.scpdb.ScpDbAgentException;
 import encryption.damo.dto.response.damo.CipherHashResponse;
-import encryption.damo.dto.response.damo.ExportKeyResponse;
+import encryption.damo.dto.response.damo.CryptoResponse;
 import encryption.damo.enums.DAmoHashId;
-import encryption.damo.enums.DAmoSecurityKey;
+import encryption.damo.utils.CryptoUtil;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.stereotype.Service;
@@ -15,138 +13,67 @@ import org.springframework.stereotype.Service;
 @Service
 @Slf4j
 public class DAmoService {
-    @Value("${penta.agent.path}")
+    @Value("${damo.agent.path}")
     private String agentPath;
- 
+    @Value("${btob.security.personal.key}")
+    private String securityKey;
+    @Value("${btob.security.finance.key}")
+    private String financeSecurityKey;
+
     /**
      * string 암호화 함수
      * 난수로 생성된 key 로만 암호화 가능
      *
-     * @param keyword 암호화 대상
-     * @param key 암호화 키
-     * @return hex string
+     * @param value 암호화 대상
+     * @return CryptoResponse hex-string
      */
-    public String getEncode(String keyword, String key) {
-        try {
-            this.loggingJavaSystem();
-
-            ScpDbAgent agent = new ScpDbAgent();
-
-            return agent.ScpEncStr(agentPath, key, keyword);
-        } catch (ScpDbAgentException se) {
-            log.error(se.toString());
-        } catch (Exception e) {
-            log.error(e.getMessage());
-            log.error(e.getLocalizedMessage());
-            log.error(e.toString());
-        }
-
-        return null;
+    public CryptoResponse getEncode(String value) {
+        return CryptoResponse.builder()
+                .input(value)
+                .output(CryptoUtil.encryptionHex(value, securityKey, agentPath))
+                .build();
     }
 
     /**
      * string 암호화 함수
      * 난수로 생성된 key 로만 암호화 가능
      *
-     * @param keyword 암호화 대상
-     * @param key 암호화 키
-     * @return base 64 string
+     * @param value 암호화 대상
+     * @return CryptoResponse base64-string
      */
-    public String getEncodeB64(String keyword, String key) {
-        try {
-            this.loggingJavaSystem();
-
-            ScpDbAgent agent = new ScpDbAgent();
-
-            return agent.ScpEncB64(agentPath, key, keyword);
-        } catch (ScpDbAgentException se) {
-            log.error(se.toString());
-        } catch (Exception e) {
-            log.error(e.getMessage());
-            log.error(e.getLocalizedMessage());
-            log.error(e.toString());
-        }
-
-        return null;
-    }
-
-    /**
-     * 주민번호 string 암호화 함수
-     * 난수로 생성된 key 로만 암호화 가능
-     * 주민번호 format 검중, 전체 주민번호만 검증 가능
-     *
-     * @param keyword 주민번호
-     * @param key 암호화 키
-     * @return base 64 string
-     */
-    public String getEncodeB64RRN(String keyword, String key) {
-        try {
-            this.loggingJavaSystem();
-
-            ScpDbAgent agent = new ScpDbAgent();
-
-            return agent.ScpEncRRNB64(agentPath, key, keyword);
-        } catch (ScpDbAgentException se) {
-            log.error(se.toString());
-        } catch (Exception e) {
-            log.error(e.getMessage());
-            log.error(e.getLocalizedMessage());
-            log.error(e.toString());
-        }
-
-        return null;
+    public CryptoResponse getEncodeB64(String value) {
+        return CryptoResponse.builder()
+                .input(value)
+                .output(CryptoUtil.encryptionBase64(value, securityKey, agentPath))
+                .build();
     }
 
     /**
      * hex string 복호화 함수
      * 난수로 생성된 key 로만 복호화 가능
      *
-     * @param keyword 복호화 대상
-     * @param key 복호화 키
+     * @param value 복호화 대상
      * @return string
      */
-    public String getDecode(String keyword, String key) {
-        try {
-            this.loggingJavaSystem();
-
-            ScpDbAgent agent = new ScpDbAgent();
-
-            return agent.ScpDecStr(agentPath, key, keyword);
-        } catch (ScpDbAgentException se) {
-            log.error(se.toString());
-        } catch (Exception e) {
-            log.error(e.getMessage());
-            log.error(e.getLocalizedMessage());
-            log.error(e.toString());
-        }
-
-        return null;
+    public CryptoResponse getDecode(String value) {
+        return CryptoResponse.builder()
+                .input(value)
+                .output(CryptoUtil.decryptionHex(value, securityKey, agentPath))
+                .build();
     }
 
     /**
      * base 64 string 복호화 함수
      * 난수로 생성된 key 로만 복호화 가능
      *
-     * @param keyword 복호화 대상
-     * @param key 복호화 키
+     * @param value 복호화 대상
      * @return string
      */
-    public String getDecodeB64(String keyword, String key) {
-        try {
-            this.loggingJavaSystem();
-
-            ScpDbAgent agent = new ScpDbAgent();
-
-            return agent.ScpDecB64(agentPath, key, keyword);
-        } catch (ScpDbAgentException se) {
-            log.error(se.toString());
-        } catch (Exception e) {
-            log.error(e.getMessage());
-            log.error(e.getLocalizedMessage());
-            log.error(e.toString());
-        }
-
-        return null;
+    public CryptoResponse getDecodeB64(String value) {
+        return CryptoResponse.builder()
+                .input(value)
+                .output(CryptoUtil.decryptionBase64(value, securityKey, agentPath))
+                .build();
     }
 
     /**
@@ -154,141 +81,14 @@ public class DAmoService {
      * 임의 생성 key 만 제공
      * 난수로 생성된 key 는 제공 안됨
      *
-     * @param keyName 암호화 키
+     * @param key 암호화 키
      * @return ExportKeyResponse.class
      */
-    public ExportKeyResponse getScpExportKey(String keyName) {
-        DAmoSecurityKey securityKey = DAmoSecurityKey.getSecurityKey(keyName);
-
-        ExportKeyResponse response = ExportKeyResponse.builder()
-                .key(keyName)
+    public CryptoResponse getScpExportKey(String key) {
+        return CryptoResponse.builder()
+                .input(key)
+                .output(CryptoUtil.exportCustomCrypto(key, agentPath))
                 .build();
-
-        if (Objects.isNull(securityKey)) {
-            return response;
-        }
-
-        this.loggingJavaSystem();
-
-        try {
-            ScpDbAgent agent = new ScpDbAgent();
-
-            response.setValue(agent.ScpExportKey(agentPath, securityKey.getKey(), " "));
-
-            return response;
-        } catch (ScpDbAgentException se) {
-            log.error(se.toString());
-            response.setValue(se.getMessage());
-            return response;
-        } catch (Exception e) {
-            log.error(e.getMessage());
-            log.error(e.getLocalizedMessage());
-            log.error(e.toString());
-            response.setValue(e.getMessage());
-            return response;
-        }
-    }
-
-    public ExportKeyResponse getScpExportKeyServiceID(String keyName) {
-        DAmoSecurityKey securityKey = DAmoSecurityKey.getSecurityKey(keyName);
-
-        ExportKeyResponse response = ExportKeyResponse.builder()
-                .key(keyName)
-                .build();
-
-        if (Objects.isNull(securityKey)) {
-            return response;
-        }
-
-        this.loggingJavaSystem();
-
-        try {
-            ScpDbAgent agent = new ScpDbAgent();
-
-            response.setValue(agent.ScpExportKeyServiceID(agentPath, securityKey.getServiceId(), " "));
-
-            return response;
-        } catch (ScpDbAgentException se) {
-            log.error(se.toString());
-            response.setValue(se.getMessage());
-            return response;
-        } catch (Exception e) {
-            log.error(e.getMessage());
-            log.error(e.getLocalizedMessage());
-            log.error(e.toString());
-            response.setValue(e.getMessage());
-            return response;
-        }
-    }
-
-    /**
-     * key 에 매칭되는 context 정보 추출
-     *
-     * @param keyName 암호화 키
-     * @return ExportKeyResponse.class
-     */
-    public ExportKeyResponse getScpExportContext(String keyName) {
-        DAmoSecurityKey securityKey = DAmoSecurityKey.getSecurityKey(keyName);
-
-        ExportKeyResponse response = ExportKeyResponse.builder()
-                .key(keyName)
-                .build();
-
-        if (Objects.isNull(securityKey)) {
-            return response;
-        }
-
-        this.loggingJavaSystem();
-
-        try {
-            ScpDbAgent agent = new ScpDbAgent();
-
-            response.setValue(agent.ScpExportContext(agentPath, securityKey.getKey()));
-
-            return response;
-        } catch (ScpDbAgentException se) {
-            log.error(se.toString());
-            response.setValue(se.getMessage());
-            return response;
-        } catch (Exception e) {
-            log.error(e.getMessage());
-            log.error(e.getLocalizedMessage());
-            log.error(e.toString());
-            response.setValue(e.getMessage());
-            return response;
-        }
-    }
-
-    public ExportKeyResponse getScpExportContextServiceID(String keyName) {
-        DAmoSecurityKey securityKey = DAmoSecurityKey.getSecurityKey(keyName);
-
-        ExportKeyResponse response = ExportKeyResponse.builder()
-                .key(keyName)
-                .build();
-
-        if (Objects.isNull(securityKey)) {
-            return response;
-        }
-
-        this.loggingJavaSystem();
-
-        try {
-            ScpDbAgent agent = new ScpDbAgent();
-
-            response.setValue(agent.ScpExportContextServiceID(agentPath, securityKey.getServiceId()));
-
-            return response;
-        } catch (ScpDbAgentException se) {
-            log.error(se.toString());
-            response.setValue(se.getMessage());
-            return response;
-        } catch (Exception e) {
-            log.error(e.getMessage());
-            log.error(e.getLocalizedMessage());
-            log.error(e.toString());
-            response.setValue(e.getMessage());
-            return response;
-        }
     }
 
     /**

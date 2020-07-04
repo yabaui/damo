@@ -5,7 +5,7 @@ import lombok.Data;
 
 @Data
 @Builder
-public class ExportKeyResponse {
-    private String key;
-    private String value;
+public class CryptoResponse {
+    private final String input;
+    private final String output;
 }
