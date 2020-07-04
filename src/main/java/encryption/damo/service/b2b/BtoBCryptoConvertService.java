@@ -12,6 +12,7 @@ import encryption.damo.model.btob.OverseasIns;
 import encryption.damo.repository.btob.InsMarketSubscriptionHistoryRepository;
 import encryption.damo.repository.btob.OverseasInsRepository;
 import encryption.damo.utils.CryptoUtil;
+import encryption.damo.utils.DAmoStringUtils;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.factory.annotation.Value;
@@ -167,9 +168,9 @@ public class BtoBCryptoConvertService {
                 continue;
             }
 
-            String ssn = CryptoUtil.aesDecryption(history.getSsn(), key, iv);
+            String ssn = CryptoUtil.decryptedUTF8(history.getSsn());
 
-            if (!this.isNumeric(ssn)) {
+            if (!DAmoStringUtils.isNumeric(ssn)) {
                 ssn = CryptoUtil.aesDecryptionEUCKR(history.getSsn(), key, iv);
             }
 
@@ -202,58 +203,5 @@ public class BtoBCryptoConvertService {
         insMarketSubscriptionHistoryRepository.saveAll(list);
 
         return decryptionBuilder.toString();
-    }
-
-    private String decrypted(String value) {
-        final String devKey = "54204599-a1fa-4c10-96a8-99af0d38f8f6";
-        final String stgKey = "ce545558-fcc0-4aa4-adc2-06257c8d26c8";
-        final String prodKey = "754aa6dd-bcd4-4e06-a95f-9bcc3dd407aa";
-        final String memberKey = "64ddc7b5-9aef-4d7a-99b2-65977fbe41cc";
-
-        String privateKey = CryptoUtil.getCryptoKey(devKey);
-        String privateIv = CryptoUtil.getCryptoIv(privateKey);
-
-        String decryptedValue = CryptoUtil.aesDecryption(value, privateKey, privateIv);
-
-        if (Objects.nonNull(decryptedValue)) {
-            return decryptedValue;
-        }
-
-        privateKey = CryptoUtil.getCryptoKey(stgKey);
-        privateIv = CryptoUtil.getCryptoIv(privateKey);
-
-        decryptedValue = CryptoUtil.aesDecryption(value, privateKey, privateIv);
-
-        if (Objects.nonNull(decryptedValue)) {
-            return decryptedValue;
-        }
-
-        privateKey = CryptoUtil.getCryptoKey(prodKey);
-        privateIv = CryptoUtil.getCryptoIv(privateKey);
-
-        decryptedValue = CryptoUtil.aesDecryption(value, privateKey, privateIv);
-
-        if (Objects.nonNull(decryptedValue)) {
-            return decryptedValue;
-        }
-
-        privateKey = CryptoUtil.getCryptoKey(memberKey);
-        privateIv = CryptoUtil.getCryptoIv(privateKey);
-
-        return CryptoUtil.aesDecryption(value, privateKey, privateIv);
-    }
-
-    private boolean isNumeric(String value) {
-        if (StringUtils.isEmpty(value)) {
-            return false;
-        }
-
-        try {
-            Double.parseDouble(value);
-        } catch (NumberFormatException nfe) {
-            return false;
-        }
-
-        return true;
     }
 }

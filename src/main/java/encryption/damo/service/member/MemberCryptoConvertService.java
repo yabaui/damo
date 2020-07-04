@@ -2,12 +2,14 @@ package encryption.damo.service.member;
 
 import java.util.List;
 import java.util.Objects;
+import java.util.Optional;
 
 import encryption.damo.enums.ResponseCodes;
 import encryption.damo.exception.IntegrationException;
 import encryption.damo.model.member.*;
 import encryption.damo.repository.member.*;
 import encryption.damo.utils.CryptoUtil;
+import encryption.damo.utils.DAmoStringUtils;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.factory.annotation.Value;
@@ -32,8 +34,8 @@ public class MemberCryptoConvertService {
     @Value("${damo.agent.path}")
     private String agentPath;
 
-    private static final String EMPTY = ">>>>>>>> %s empty";
-    private static final String SUCCESS = ">>>>>>>> %s success";
+    private static final String EMPTY = ">>>>>>>> empty";
+    private static final String SUCCESS = ">>>>>>>> success";
     private static final String EMPTY_STRING = "";
     private static final String ID_FORMAT = "id : %s\n";
     private static final String CHECKUP_DATE_FORMAT = "mb_uid : %d / checkup_date : %s\n";
@@ -57,7 +59,7 @@ public class MemberCryptoConvertService {
         int totalCount = healthCheckupCryptoRepository.countAllByOptionalNot(EMPTY_STRING);
 
         if (totalCount == page) {
-            log.info(String.format(EMPTY, method));
+            log.info(EMPTY);
             return;
         }
 
@@ -70,7 +72,7 @@ public class MemberCryptoConvertService {
                     healthCheckupCryptoRepository.findAllByOptionalNot(EMPTY_STRING, PageRequest.of(page, SIZE));
 
             if (CollectionUtils.isEmpty(list)) {
-                log.info(String.format(EMPTY, method));
+                log.info(EMPTY);
                 break;
             }
 
@@ -95,7 +97,7 @@ public class MemberCryptoConvertService {
             log.info(String.format(ENCRYPTION_FAIL_FORMAT, method) + builder.toString());
         }
 
-        log.info(String.format(SUCCESS, method));
+        log.info(SUCCESS);
     }
 
     @Async("threadPoolTaskExecutor")
@@ -107,7 +109,7 @@ public class MemberCryptoConvertService {
         int totalCount = familyHealthCheckupCryptoRepository.countAllByRiskScoreNot(EMPTY_STRING);
 
         if (totalCount == page) {
-            log.info(String.format(EMPTY, method));
+            log.info(EMPTY);
             return;
         }
 
@@ -120,7 +122,7 @@ public class MemberCryptoConvertService {
                     familyHealthCheckupCryptoRepository.findAllByRiskScoreNot(EMPTY_STRING, PageRequest.of(page, SIZE));
 
             if (CollectionUtils.isEmpty(list)) {
-                log.info(String.format(EMPTY, method));
+                log.info(EMPTY);
                 break;
             }
 
@@ -145,7 +147,7 @@ public class MemberCryptoConvertService {
             log.info(String.format(ENCRYPTION_FAIL_FORMAT, method) + builder.toString());
         }
 
-        log.info(String.format(SUCCESS, method));
+        log.info(SUCCESS);
     }
 
     @Async("threadPoolTaskExecutor")
@@ -173,7 +175,7 @@ public class MemberCryptoConvertService {
             log.info(String.format(ENCRYPTION_FAIL_FORMAT, method) + builder.toString());
         }
 
-        log.info(String.format(SUCCESS, method));
+        log.info(SUCCESS);
     }
 
     @Transactional(value = "transactionManagerMember", propagation = Propagation.REQUIRES_NEW)
@@ -181,7 +183,7 @@ public class MemberCryptoConvertService {
         List<HealthCheckupDetailCrypto> list = healthCheckupDetailCryptoRepository.findAllBy(PageRequest.of(page, SIZE));
 
         if (CollectionUtils.isEmpty(list)) {
-            log.info(String.format(EMPTY, method));
+            log.info(EMPTY);
             return false;
         }
 
@@ -234,7 +236,7 @@ public class MemberCryptoConvertService {
         int totalCount = healthCheckupAnalysisPdfCryptoRepository.countAllByPdfPathNot(EMPTY_STRING);
 
         if (totalCount == page) {
-            log.info(String.format(EMPTY, method));
+            log.info(EMPTY);
             return;
         }
 
@@ -247,7 +249,7 @@ public class MemberCryptoConvertService {
                     healthCheckupAnalysisPdfCryptoRepository.findAllByPdfPathNot(EMPTY_STRING, PageRequest.of(page, SIZE));
 
             if (CollectionUtils.isEmpty(list)) {
-                log.info(String.format(EMPTY, method));
+                log.info(EMPTY);
                 break;
             }
 
@@ -272,7 +274,7 @@ public class MemberCryptoConvertService {
             log.info(String.format(ENCRYPTION_FAIL_FORMAT, method) + builder.toString());
         }
 
-        log.info(String.format(SUCCESS, method));
+        log.info(SUCCESS);
     }
 
     @Async("threadPoolTaskExecutor")
@@ -284,7 +286,7 @@ public class MemberCryptoConvertService {
         int totalCount = healthCheckupBioAgeAnalysisGuideCryptoRepository.countAllBy();
 
         if (totalCount == page) {
-            log.info(String.format(EMPTY, method));
+            log.info(EMPTY);
             return;
         }
 
@@ -297,7 +299,7 @@ public class MemberCryptoConvertService {
                     healthCheckupBioAgeAnalysisGuideCryptoRepository.findAllBy(PageRequest.of(page, SIZE));
 
             if (CollectionUtils.isEmpty(list)) {
-                log.info(String.format(EMPTY, method));
+                log.info(EMPTY);
                 break;
             }
 
@@ -331,7 +333,7 @@ public class MemberCryptoConvertService {
             log.info(String.format(ENCRYPTION_FAIL_FORMAT, method) + builder.toString());
         }
 
-        log.info(String.format(SUCCESS, method));
+        log.info(SUCCESS);
     }
 
     @Async("threadPoolTaskExecutor")
@@ -343,7 +345,7 @@ public class MemberCryptoConvertService {
         int totalCount = healthCheckupBioAgeLifeExpectancyCryptoRepository.countAllBy();
 
         if (totalCount == page) {
-            log.info(String.format(EMPTY, method));
+            log.info(EMPTY);
             return;
         }
 
@@ -356,7 +358,7 @@ public class MemberCryptoConvertService {
                     healthCheckupBioAgeLifeExpectancyCryptoRepository.findAllBy(PageRequest.of(page, SIZE));
 
             if (CollectionUtils.isEmpty(list)) {
-                log.info(String.format(EMPTY, method));
+                log.info(EMPTY);
                 break;
             }
 
@@ -444,7 +446,7 @@ public class MemberCryptoConvertService {
             log.info(String.format(ENCRYPTION_FAIL_FORMAT, method) + builder.toString());
         }
 
-        log.info(String.format(SUCCESS, method));
+        log.info(SUCCESS);
     }
 
     @Async("threadPoolTaskExecutor")
@@ -456,7 +458,7 @@ public class MemberCryptoConvertService {
         int totalCount = insMarketSubscriptionHistoryRepository.countAllBySsnNot(EMPTY_STRING);
 
         if (totalCount == page) {
-            log.info(String.format(EMPTY, method));
+            log.info(EMPTY);
             return;
         }
 
@@ -469,7 +471,7 @@ public class MemberCryptoConvertService {
                     insMarketSubscriptionHistoryRepository.findAllBySsnNot(EMPTY_STRING, PageRequest.of(page, SIZE));
 
             if (CollectionUtils.isEmpty(list)) {
-                log.info(String.format(EMPTY, method));
+                log.info(EMPTY);
                 break;
             }
 
@@ -494,6 +496,71 @@ public class MemberCryptoConvertService {
             log.info(String.format(ENCRYPTION_FAIL_FORMAT, method) + builder.toString());
         }
 
-        log.info(String.format(SUCCESS, method));
+        log.info(SUCCESS);
+    }
+
+    @Transactional(value = "transactionManagerMember")
+    public String decryptLegacyInsMarketSubscriptionHistory(String transactionNo) {
+        Optional<InsMarketSubscriptionHistory> history = insMarketSubscriptionHistoryRepository.findById(transactionNo);
+
+        if (!history.isPresent()) {
+            throw new IntegrationException(ResponseCodes.FAIL, "not found");
+        }
+
+        String ssn = CryptoUtil.decryptedUTF8(history.get().getSsn());
+
+        if (!DAmoStringUtils.isNumeric(ssn)) {
+            ssn = CryptoUtil.decryptedEUCKR(history.get().getSsn());
+        }
+
+        if (Objects.nonNull(ssn)) {
+            final String key = CryptoUtil.getCryptoKey(securityDbKeyLegacy);
+            final String iv = CryptoUtil.getCryptoIv(key);
+
+            history.get().setSsn(CryptoUtil.aesEncryption(ssn, key, iv));
+        }
+
+        return ssn;
+    }
+
+    @Transactional(value = "transactionManagerMember")
+    public void verifyInsMarketSubscriptionHistory() {
+        int page = 0;
+
+        int totalCount = insMarketSubscriptionHistoryRepository.countAllBySsnNot(EMPTY_STRING);
+
+        if (totalCount == page) {
+            log.info(EMPTY);
+            return;
+        }
+
+        StringBuilder builder = new StringBuilder();
+
+        do {
+            List<InsMarketSubscriptionHistory> list =
+                    insMarketSubscriptionHistoryRepository.findAllBySsnNot(EMPTY_STRING, PageRequest.of(page, SIZE));
+
+            if (CollectionUtils.isEmpty(list)) {
+                log.info(EMPTY);
+                break;
+            }
+
+            for (InsMarketSubscriptionHistory history : list) {
+                String ssn = CryptoUtil.decryptionBase64(history.getSsn(), securityDbKey, agentPath);
+
+                if (Objects.isNull(ssn)) {
+                    builder.append("transaction_no : ").append(history.getTransactionNo()).append("\n");
+                }
+            }
+
+            page++;
+            totalCount -= SIZE;
+        } while (totalCount >= 0);
+
+        if (!StringUtils.isEmpty(builder.toString())) {
+            log.info(builder.toString());
+        }
+
+        log.info(SUCCESS);
     }
 }

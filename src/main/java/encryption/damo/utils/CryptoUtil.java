@@ -2,6 +2,7 @@ package encryption.damo.utils;
 
 import java.nio.charset.StandardCharsets;
 import java.util.Base64;
+import java.util.Objects;
 
 import javax.crypto.Cipher;
 import javax.crypto.spec.IvParameterSpec;
@@ -209,5 +210,89 @@ public class CryptoUtil {
             log.error(e.getMessage());
             return null;
         }
+    }
+
+    public static String decryptedUTF8(String value) {
+        final String devKey = "54204599-a1fa-4c10-96a8-99af0d38f8f6";
+
+        String privateKey = getCryptoKey(devKey);
+        String privateIv = getCryptoIv(privateKey);
+
+        String decryptedValue = aesDecryption(value, privateKey, privateIv);
+
+        if (Objects.nonNull(decryptedValue)) {
+            return decryptedValue;
+        }
+
+        final String stgKey = "ce545558-fcc0-4aa4-adc2-06257c8d26c8";
+
+        privateKey = getCryptoKey(stgKey);
+        privateIv = getCryptoIv(privateKey);
+
+        decryptedValue = aesDecryption(value, privateKey, privateIv);
+
+        if (Objects.nonNull(decryptedValue)) {
+            return decryptedValue;
+        }
+
+        final String prodKey = "754aa6dd-bcd4-4e06-a95f-9bcc3dd407aa";
+
+        privateKey = getCryptoKey(prodKey);
+        privateIv = getCryptoIv(privateKey);
+
+        decryptedValue = aesDecryption(value, privateKey, privateIv);
+
+        if (Objects.nonNull(decryptedValue)) {
+            return decryptedValue;
+        }
+
+        final String memberKey = "64ddc7b5-9aef-4d7a-99b2-65977fbe41cc";
+
+        privateKey = getCryptoKey(memberKey);
+        privateIv = getCryptoIv(privateKey);
+
+        return aesDecryption(value, privateKey, privateIv);
+    }
+
+    public static String decryptedEUCKR(String value) {
+        final String devKey = "54204599-a1fa-4c10-96a8-99af0d38f8f6";
+
+        String privateKey = getCryptoKey(devKey);
+        String privateIv = getCryptoIv(privateKey);
+
+        String decryptedValue = aesDecryptionEUCKR(value, privateKey, privateIv);
+
+        if (Objects.nonNull(decryptedValue)) {
+            return decryptedValue;
+        }
+
+        final String stgKey = "ce545558-fcc0-4aa4-adc2-06257c8d26c8";
+
+        privateKey = getCryptoKey(stgKey);
+        privateIv = getCryptoIv(privateKey);
+
+        decryptedValue = aesDecryptionEUCKR(value, privateKey, privateIv);
+
+        if (Objects.nonNull(decryptedValue)) {
+            return decryptedValue;
+        }
+
+        final String prodKey = "754aa6dd-bcd4-4e06-a95f-9bcc3dd407aa";
+
+        privateKey = getCryptoKey(prodKey);
+        privateIv = getCryptoIv(privateKey);
+
+        decryptedValue = aesDecryptionEUCKR(value, privateKey, privateIv);
+
+        if (Objects.nonNull(decryptedValue)) {
+            return decryptedValue;
+        }
+
+        final String memberKey = "64ddc7b5-9aef-4d7a-99b2-65977fbe41cc";
+
+        privateKey = getCryptoKey(memberKey);
+        privateIv = getCryptoIv(privateKey);
+
+        return aesDecryptionEUCKR(value, privateKey, privateIv);
     }
 }
