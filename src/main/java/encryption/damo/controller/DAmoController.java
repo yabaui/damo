@@ -58,5 +58,4 @@ public class DAmoController {
 
         return ResponseUtils.createResponseEntity(ResponseCodes.SUCCESS, dAmoService.getDecodeB64(value));
     }
-
 }
